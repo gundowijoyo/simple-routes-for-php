@@ -1,0 +1,3 @@
+<?php
+class Router{private $routes=[];public function add($method,$path,$callback){$method=strtoupper($method);$path=rtrim($path,'/').'/';$this->routes[]=['method'=>$method,'path'=>$path,'callback'=>$callback];}public function run(){$currentPath=parse_url($_SERVER['REQUEST_URI'],PHP_URL_PATH);$currentMethod=$_SERVER['REQUEST_METHOD'];if(substr($currentPath,-1)!=='/'){header("Location: {$currentPath}/",true,301);exit;}foreach($this->routes as $route){if($route['method']===$currentMethod&&$route['path']===$currentPath){if(is_callable($route['callback'])){call_user_func($route['callback']);return;}}}http_response_code(404);echo"404 Not Found";}}
+?>
